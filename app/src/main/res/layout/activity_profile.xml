@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            tools:context=".ProfileActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+        <!-- Profile Picture -->
+        <ImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/ic_profile"
+        android:contentDescription="@string/profile_picture"
+        android:background="@drawable/circle_background" />
+
+
+        <!-- Name -->
+        <TextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/profile_name"
+                android:textSize="20sp"
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
+
+        <!-- Email -->
+        <TextView
+                android:id="@+id/profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="@string/profile_email"
+                android:textSize="16sp"
+                android:textColor="@color/darker_gray" />
+
+        <!-- Bio -->
+        <TextView
+                android:id="@+id/profile_bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/profile_bio"
+                android:textSize="16sp"
+                android:textColor="@color/darker_gray" />
+
+        <!-- Settings Options -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp">
+
+            <TextView
+                    android:id="@+id/settings_option_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/settings_option_1"
+                    android:textSize="16sp"
+                    android:textColor="@color/primary_dark"
+                    android:background="?attr/selectableItemBackground" />
+
+            <TextView
+                    android:id="@+id/settings_option_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/settings_option_2"
+                    android:textSize="16sp"
+                    android:textColor="@color/primary_dark"
+                    android:background="?attr/selectableItemBackground" />
+
+            <TextView
+                    android:id="@+id/settings_option_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/settings_option_3"
+                    android:textSize="16sp"
+                    android:textColor="@color/primary_dark"
+                    android:background="?attr/selectableItemBackground" />
+
+            <TextView
+                    android:id="@+id/settings_option_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/settings_option_4"
+                    android:textSize="16sp"
+                    android:textColor="@color/primary_dark"
+                    android:background="?attr/selectableItemBackground" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
