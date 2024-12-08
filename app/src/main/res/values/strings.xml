@@ -56,6 +56,8 @@
     <string name="settings_option_2">Account Settings</string>
     <string name="settings_option_3">Notification Settings</string>
     <string name="settings_option_4">Logout</string>
+    <string name="recruiter_login_button">Login As Recruiter</string>
+    <string name="recruiter_login">recruiter login</string>
 </resources>
 
 

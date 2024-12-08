@@ -33,6 +33,11 @@
 
         <activity android:name=".ProfileActivity" />
         <activity android:name=".NotificationsActivity" />
+        <activity android:name=".RecruiterLoginActivity" />
+        <activity android:name=".PostJobActivity" />
+
+
+
 
 
         <!--        &lt;!&ndash; Set MainActivity to start when the app opens &ndash;&gt;-->

@@ -6,7 +6,7 @@ public class Job {
 	private String company;
 	private String location;
 
-	public Job(String title, String company, String location) {
+	public Job(String title, String company, String location, String jobDescription) {
 		this.title = title;
 		this.company = company;
 		this.location = location;

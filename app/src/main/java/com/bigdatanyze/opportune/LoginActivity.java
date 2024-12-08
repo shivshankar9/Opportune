@@ -1,5 +1,6 @@
 package com.bigdatanyze.opportune;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,14 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.textview.MaterialTextView;
 
 public class LoginActivity extends AppCompatActivity {
 
 	private EditText usernameEditText, passwordEditText;
 	private Button loginButton;
-	private TextView signUp; // Changed from Button to TextView
+	private MaterialTextView recruiterLoginPageButton;	private TextView signUp;
 	private ImageView logo;
 
+	@SuppressLint("WrongViewCast")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 		passwordEditText = findViewById(R.id.password);
 		loginButton = findViewById(R.id.login_button);
 		signUp = findViewById(R.id.sign_up); // Changed from signup_button to sign_up
+		recruiterLoginPageButton = findViewById(R.id.recruiter_login_page_button); // Initialize recruiter login button
 
 		// Load animations
 		Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -60,6 +64,20 @@ public class LoginActivity extends AppCompatActivity {
 				signupUser();
 			}
 		});
+
+		// Recruiter login page button click listener
+		recruiterLoginPageButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				recruiterLoginPage();
+			}
+		});
+	}
+
+	private void recruiterLoginPage() {
+		Intent intent = new Intent(LoginActivity.this, RecruiterLoginActivity.class);
+		startActivity(intent);
+		finish();
 	}
 
 	private void loginUser() {
@@ -68,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 		String password = passwordEditText.getText().toString();
 
 		if (username.equals("admin") && password.equals("admin")) {
-			// Redirect to HomeActivity after successful login
+			// Redirect to DashboardActivity after successful login
 			Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 			startActivity(intent);
 			finish(); // Close the login activity
@@ -79,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
 	private void signupUser() {
 		// Handle user signup (you can implement signup logic here)
-		Intent intent=new Intent(LoginActivity.this, SignupActivity.class);
+		Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
 		startActivity(intent);
 		finish();
 	}

@@ -1,85 +1,71 @@
 package com.bigdatanyze.opportune;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.bigdatanyze.opportune.R;
+//import retrofit2.Call;
+//import retrofit2.Callback;
+//import retrofit2.Response;
+//import retrofit2.Retrofit;
+//import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
-	private TextView header;
-	private EditText searchJobs;
 	private RecyclerView jobList;
-	private BottomNavigationView bottomNavigationView;
 	private JobAdapter jobAdapter;
 	private List<Job> jobs;
+	private static final String BASE_URL = "https://your-backend-url.com"; // Replace with your API URL
 
-	@SuppressLint("MissingInflatedId")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashbord);
 
-		// Initialize the views
-		header = findViewById(R.id.header);
-		searchJobs = findViewById(R.id.search_jobs);
 		jobList = findViewById(R.id.job_list);
-		bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-		// Load animations
-		Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-		Animation slideInLeft = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
-		Animation slideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
-
-		// Apply animations
-		header.startAnimation(fadeIn);
-		searchJobs.startAnimation(slideInLeft);
-		jobList.startAnimation(slideInRight);
 
 		// Initialize job list
 		jobs = new ArrayList<>();
-		jobs.add(new Job("Software Engineer", "Google", "Mountain View, CA"));
-		jobs.add(new Job("Data Analyst", "Facebook", "Menlo Park, CA"));
-		jobs.add(new Job("Product Manager", "Amazon", "Seattle, WA"));
-		// Add more jobs as needed
 
 		// Set up RecyclerView
-		jobAdapter = new JobAdapter(this, jobs);
+		jobAdapter = new JobAdapter(this, Collections.singletonList((Job) jobs));
 		jobList.setLayoutManager(new LinearLayoutManager(this));
 		jobList.setAdapter(jobAdapter);
 
-		// Handle bottom navigation item clicks
-		bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-			int id = item.getItemId();
-			if (id == R.id.nav_home) {
-				// Handle Home action
-				Intent intent = new Intent(DashboardActivity.this, DashboardActivity.class);
-				startActivity(intent);
-				return true;
-			} else if (id == R.id.nav_profile) {
-				// Handle Profile action
-				Intent intent = new Intent(DashboardActivity.this, ProfileActivity.class);
-				startActivity(intent);
-				return true;
-			} else if (id == R.id.nav_notifications) {
-				// Handle Notifications action
-				Intent intent = new Intent(DashboardActivity.this, NotificationsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			return false;
-		});
+//		fetchJobs();
 	}
+
+//	private void fetchJobs() {
+//		Retrofit retrofit = new Retrofit.Builder()
+//				.baseUrl(BASE_URL)
+//				.addConverterFactory(GsonConverterFactory.create())
+//				.build();
+//
+//		JobApi jobApi = retrofit.create(JobApi.class);
+//		Call<List<Job>> call = jobApi.getAllJobs();
+//
+//		call.enqueue(new Callback<List<Job>>() {
+//			@Override
+//			public void onResponse(Call<List<Job>> call, Response<List<Job>> response) {
+//				if (response.isSuccessful()) {
+//					jobs.clear();
+//					jobs.addAll(response.body());
+//					jobAdapter.notifyDataSetChanged();
+//				} else {
+//					Toast.makeText(DashboardActivity.this, "Failed to load jobs", Toast.LENGTH_SHORT).show();
+//				}
+//			}
+//
+//			@Override
+//			public void onFailure(Call<List<Job>> call, Throwable t) {
+//				Toast.makeText(DashboardActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//			}
+//		});
+//	}
 }
