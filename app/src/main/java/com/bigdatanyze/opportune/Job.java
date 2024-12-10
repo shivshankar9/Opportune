@@ -2,22 +2,24 @@ package com.bigdatanyze.opportune;
 
 public class Job {
 
-	private String title;
-	private String company;
+	private String jobTitle;
+	private String companyName;
 	private String location;
 
-	public Job(String title, String company, String location, String jobDescription) {
-		this.title = title;
-		this.company = company;
+	// Constructor
+	public Job(String jobTitle, String companyName, String location, String jobDescription) {
+		this.jobTitle = jobTitle;
+		this.companyName = companyName;
 		this.location = location;
 	}
 
-	public String getTitle() {
-		return title;
+	// Getter methods
+	public String getJobTitle() {
+		return jobTitle;
 	}
 
-	public String getCompany() {
-		return company;
+	public String getCompanyName() {
+		return companyName;
 	}
 
 	public String getLocation() {

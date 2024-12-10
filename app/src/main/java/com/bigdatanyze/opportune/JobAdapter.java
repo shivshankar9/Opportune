@@ -31,9 +31,11 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 	@Override
 	public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
 		Job job = jobList.get(position);
-		holder.jobTitle.setText(job.getTitle());
-		holder.companyName.setText(job.getCompany());
-		holder.location.setText(job.getLocation());
+
+		// Use the correct getter methods from your Job class
+		holder.jobTitle.setText(job.getJobTitle());  // Correct method
+		holder.companyName.setText(job.getCompanyName());  // Correct method
+		holder.location.setText(job.getLocation());  // Correct method
 	}
 
 	@Override

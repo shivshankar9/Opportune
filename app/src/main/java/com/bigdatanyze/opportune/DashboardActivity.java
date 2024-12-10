@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bigdatanyze.opportune.R;
+import kotlinx.coroutines.Job;
 //import retrofit2.Call;
 //import retrofit2.Callback;
 //import retrofit2.Response;
@@ -34,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
 		jobs = new ArrayList<>();
 
 		// Set up RecyclerView
-		jobAdapter = new JobAdapter(this, Collections.singletonList((Job) jobs));
+		jobAdapter = new JobAdapter(this, Collections.singletonList((com.bigdatanyze.opportune.Job) jobs));
 		jobList.setLayoutManager(new LinearLayoutManager(this));
 		jobList.setAdapter(jobAdapter);
 

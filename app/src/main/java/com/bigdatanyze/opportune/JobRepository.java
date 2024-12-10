@@ -1,5 +1,7 @@
 package com.bigdatanyze.opportune;
 
+import kotlinx.coroutines.Job;
+
 import java.util.ArrayList;
 import java.util.List;
 
