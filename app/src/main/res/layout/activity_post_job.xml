@@ -3,7 +3,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:padding="16dp">
+              android:padding="16dp"
+              android:gravity="center">
 
     <!-- Job Title Input -->
     <TextView
@@ -94,6 +95,23 @@
             android:layout_height="wrap_content"
             android:hint="Enter Salary"
             android:inputType="number"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+    <!-- Apply Link Input -->
+    <TextView
+            android:id="@+id/ApplyLink_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply Link"
+            android:textSize="16sp"
+            android:paddingBottom="8dp" />
+
+    <EditText
+            android:id="@+id/ApplyLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Apply Link"
             android:padding="12dp"
             android:layout_marginBottom="16dp" />
 

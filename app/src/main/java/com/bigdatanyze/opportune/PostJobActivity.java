@@ -17,11 +17,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostJobActivity extends AppCompatActivity {
 
-	private EditText jobTitleEditText, companyNameEditText, locationEditText, jobDescriptionEditText, salaryEditText;
+	private EditText jobTitleEditText, companyNameEditText, locationEditText, jobDescriptionEditText, salaryEditText, applyLinkEditText;
 	private Button postJobButton;
 
 	// URL for your backend (change this to the production URL)
 	private static final String BASE_URL = "https://server-opportune-1.onrender.com/";
+
+	private Retrofit retrofit;
 
 	@SuppressLint("MissingInflatedId")
 	@Override
@@ -35,7 +37,14 @@ public class PostJobActivity extends AppCompatActivity {
 		locationEditText = findViewById(R.id.location);
 		jobDescriptionEditText = findViewById(R.id.job_description);
 		salaryEditText = findViewById(R.id.salary);
+		applyLinkEditText = findViewById(R.id.ApplyLink);
 		postJobButton = findViewById(R.id.post_job_button);
+
+		// Initialize Retrofit
+		retrofit = new Retrofit.Builder()
+				.baseUrl(BASE_URL)  // Set the backend URL
+				.addConverterFactory(GsonConverterFactory.create())  // Gson converter for parsing JSON
+				.build();
 
 		// Set up the button click listener to trigger the job posting
 		postJobButton.setOnClickListener(v -> postJob());
@@ -48,19 +57,14 @@ public class PostJobActivity extends AppCompatActivity {
 		String location = locationEditText.getText().toString().trim();
 		String jobDescription = jobDescriptionEditText.getText().toString().trim();
 		String salaryText = salaryEditText.getText().toString().trim();
+		String applyLink = applyLinkEditText.getText().toString().trim();
 
 		// Check if all fields are filled out
 		if (!jobTitle.isEmpty() && !companyName.isEmpty() && !location.isEmpty() && !jobDescription.isEmpty() && !salaryText.isEmpty()) {
 			int salary = Integer.parseInt(salaryText);  // Convert salary to integer
 
 			// Create a Job object to send to the backend
-			Job job = new Job(jobTitle, jobDescription, companyName, location, salary, "2024-12-12T00:00:00");
-
-			// Set up Retrofit to interact with the backend API
-			Retrofit retrofit = new Retrofit.Builder()
-					.baseUrl(BASE_URL)  // Set the backend URL
-					.addConverterFactory(GsonConverterFactory.create())  // Gson converter for parsing JSON
-					.build();
+			Job job = new Job(jobTitle, jobDescription, companyName, location, salary, "2024-12-12T00:00:00", "finverge.tech");
 
 			// Create the API service
 			JobApi jobApi = retrofit.create(JobApi.class);
@@ -80,6 +84,7 @@ public class PostJobActivity extends AppCompatActivity {
 						locationEditText.setText("");
 						jobDescriptionEditText.setText("");
 						salaryEditText.setText("");
+						applyLinkEditText.setText("");
 					} else {
 						// Failed to post the job (e.g., server error)
 						Toast.makeText(PostJobActivity.this, "Failed to post job. Try again.", Toast.LENGTH_SHORT).show();

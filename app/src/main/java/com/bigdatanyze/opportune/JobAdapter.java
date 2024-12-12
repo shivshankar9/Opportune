@@ -3,6 +3,7 @@ package com.bigdatanyze.opportune;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		holder.salaryTextView.setText(String.format("$%,.2f", job.getSalary()));
 		holder.datePostedTextView.setText(job.getDatePosted());
 
+
 	}
 
 	@Override
@@ -46,6 +48,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		TextView salaryTextView;
 		TextView datePostedTextView;
 
+		Button applyButton;
+
 		public JobViewHolder(View itemView) {
 			super(itemView);
 			titleTextView = itemView.findViewById(R.id.job_title);
@@ -53,6 +57,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 			locationTextView = itemView.findViewById(R.id.job_location);
 			salaryTextView = itemView.findViewById(R.id.job_salary);
 			datePostedTextView = itemView.findViewById(R.id.job_date_posted);
+			applyButton= itemView.findViewById(R.id.apply_button);
 		}
 	}
 }

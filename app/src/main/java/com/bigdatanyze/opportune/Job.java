@@ -8,6 +8,15 @@ public class Job {
 	private double salary;
 	private String datePosted;
 
+	public String getApplyLink() {
+		return applyLink;
+	}
+
+	public void setApplyLink(String applyLink) {
+		this.applyLink = applyLink;
+	}
+
+	private String applyLink;
 	// Default constructor (existing)
 	public Job() {
 	}
@@ -24,13 +33,14 @@ public class Job {
 
 
 	// Constructor with parameters (including salary and datePosted)
-	public Job(String title, String company, String location, String description, double salary, String datePosted) {
+	public Job(String title, String company, String location, String description, double salary, String datePosted, String applyLink) {
 		this.title = title;
 		this.company = company;
 		this.location = location;
 		this.description = description;
 		this.salary = salary;
 		this.datePosted = datePosted;
+		this.applyLink=applyLink;
 	}
 
 
