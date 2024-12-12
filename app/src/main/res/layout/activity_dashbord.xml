@@ -3,9 +3,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:background="@color/white"
-                tools:context=".HomeActivity">
+                android:background="@color/black"
+                tools:context=".DashboardActivity">
 
     <!-- Header -->
     <TextView
@@ -14,57 +13,18 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:text="@string/app_name"
+            android:text="Dashboard"
             android:textSize="24sp"
-            android:textColor="@color/primary" />
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
 
-    <!-- Search Bar -->
-    <EditText
-            android:id="@+id/search_jobs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/header"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="@string/search_hint"
-            android:inputType="text"
-            android:background="@drawable/input_background"
-            android:padding="10dp" />
-
-    <!-- Recruiter Login Button -->
-    <Button
-            android:id="@+id/recruiter_login_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/search_jobs"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/recruiter_login"
-            android:textColor="@color/white"
-            android:background="@drawable/button_background"
-            android:textSize="16sp"
-            android:padding="12dp"
-            android:focusable="true"
-            android:clickable="true" />
-
-    <!-- Job List -->
+    <!-- RecyclerView for job listings -->
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/job_list"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_below="@id/recruiter_login_button"
+            android:layout_height="match_parent"
+            android:layout_below="@id/header"
             android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp" />
-
-    <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:menu="@menu/bottom_navigation_menu" />
 </RelativeLayout>

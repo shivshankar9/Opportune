@@ -1,5 +1,6 @@
 package com.bigdatanyze.opportune;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +17,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostJobActivity extends AppCompatActivity {
 
-	private EditText jobTitleEditText, companyNameEditText, locationEditText, jobDescriptionEditText;
+	private EditText jobTitleEditText, companyNameEditText, locationEditText, jobDescriptionEditText, salaryEditText;
 	private Button postJobButton;
 
-	// Replace with your actual backend URL
-	private static final String BASE_URL = "http://localhost:8080"; // Change to your backend URL (e.g., localhost for local testing)
+	// URL for your backend (change this to the production URL)
+	private static final String BASE_URL = "https://server-opportune-1.onrender.com/";
 
+	@SuppressLint("MissingInflatedId")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class PostJobActivity extends AppCompatActivity {
 		companyNameEditText = findViewById(R.id.company_name);
 		locationEditText = findViewById(R.id.location);
 		jobDescriptionEditText = findViewById(R.id.job_description);
+		salaryEditText = findViewById(R.id.salary);
 		postJobButton = findViewById(R.id.post_job_button);
 
 		// Set up the button click listener to trigger the job posting
@@ -44,11 +47,14 @@ public class PostJobActivity extends AppCompatActivity {
 		String companyName = companyNameEditText.getText().toString().trim();
 		String location = locationEditText.getText().toString().trim();
 		String jobDescription = jobDescriptionEditText.getText().toString().trim();
+		String salaryText = salaryEditText.getText().toString().trim();
 
 		// Check if all fields are filled out
-		if (!jobTitle.isEmpty() && !companyName.isEmpty() && !location.isEmpty() && !jobDescription.isEmpty()) {
+		if (!jobTitle.isEmpty() && !companyName.isEmpty() && !location.isEmpty() && !jobDescription.isEmpty() && !salaryText.isEmpty()) {
+			int salary = Integer.parseInt(salaryText);  // Convert salary to integer
+
 			// Create a Job object to send to the backend
-			Job job = new Job(jobTitle, companyName, location, jobDescription);
+			Job job = new Job(jobTitle, jobDescription, companyName, location, salary, "2024-12-12T00:00:00");
 
 			// Set up Retrofit to interact with the backend API
 			Retrofit retrofit = new Retrofit.Builder()
@@ -73,6 +79,7 @@ public class PostJobActivity extends AppCompatActivity {
 						companyNameEditText.setText("");
 						locationEditText.setText("");
 						jobDescriptionEditText.setText("");
+						salaryEditText.setText("");
 					} else {
 						// Failed to post the job (e.g., server error)
 						Toast.makeText(PostJobActivity.this, "Failed to post job. Try again.", Toast.LENGTH_SHORT).show();

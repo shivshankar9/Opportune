@@ -1,70 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            tools:context=".PostJobActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="16dp">
 
-    <LinearLayout
+    <!-- Job Title Input -->
+    <TextView
+            android:id="@+id/job_title_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Title"
+            android:textSize="16sp"
+            android:paddingBottom="8dp" />
+
+    <EditText
+            android:id="@+id/job_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:hint="Enter Job Title"
+            android:inputType="text"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Job Title Input -->
-        <EditText
-                android:id="@+id/job_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Job Title"
-                android:inputType="text"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginTop="20dp" />
+    <!-- Company Name Input -->
+    <TextView
+            android:id="@+id/company_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Company Name"
+            android:textSize="16sp"
+            android:paddingBottom="8dp" />
 
-        <!-- Company Name Input -->
-        <EditText
-                android:id="@+id/company_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Company Name"
-                android:inputType="text"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginTop="10dp" />
+    <EditText
+            android:id="@+id/company_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Company Name"
+            android:inputType="text"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Location Input -->
-        <EditText
-                android:id="@+id/location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Location"
-                android:inputType="text"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginTop="10dp" />
+    <!-- Location Input -->
+    <TextView
+            android:id="@+id/location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textSize="16sp"
+            android:paddingBottom="8dp" />
 
-        <!-- Job Description Input -->
-        <EditText
-                android:id="@+id/job_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Job Description"
-                android:inputType="textMultiLine"
-                android:background="@drawable/input_background"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:minLines="4" />
+    <EditText
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Location"
+            android:inputType="text"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Post Job Button -->
-        <Button
-                android:id="@+id/post_job_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Post Job"
-                android:background="@drawable/button_background"
-                android:textColor="@color/white"
-                android:layout_marginTop="20dp" />
-    </LinearLayout>
-</ScrollView>
+    <!-- Job Description Input -->
+    <TextView
+            android:id="@+id/job_description_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Description"
+            android:textSize="16sp"
+            android:paddingBottom="8dp" />
+
+    <EditText
+            android:id="@+id/job_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Job Description"
+            android:inputType="textMultiLine"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:minHeight="120dp"
+            android:maxLines="5" />
+
+    <!-- Salary Input -->
+    <TextView
+            android:id="@+id/salary_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salary"
+            android:textSize="16sp"
+            android:paddingBottom="8dp" />
+
+    <EditText
+            android:id="@+id/salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Salary"
+            android:inputType="number"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+    <!-- Post Job Button -->
+    <Button
+            android:id="@+id/post_job_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post Job"
+            android:background="@color/primary"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:layout_marginTop="16dp" />
+</LinearLayout>

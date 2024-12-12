@@ -1,18 +1,19 @@
+// JobApi.java
 package com.bigdatanyze.opportune;
 
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.POST;
 import retrofit2.http.GET;
-import java.util.List;
+import retrofit2.http.POST;
 
 public interface JobApi {
-
-	// POST request to create a new job
-	@POST("/api/jobs/jobpost")  // Update the endpoint to match your Spring Boot backend route
-	Call<Job> postJob(@Body Job job);
-
-	// GET request to fetch all jobs
-	@GET("/api/jobs")  // Use the correct API path for retrieving jobs
+	@GET("jobs")
 	Call<List<Job>> getAllJobs();
+
+	@POST("jobs")  // This matches the POST endpoint on the server
+	Call<Job> postJob(@Body Job job);  // @Body sends the job object as the POST data
+
+	@GET("jobs")
+	Call<List<Job>> getJobs();
 }
