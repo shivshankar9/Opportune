@@ -1,17 +1,21 @@
 package com.bigdatanyze.opportune;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
 	private List<Job> jobList;
+	private Context context; // Declare a context variable
 
 	public JobAdapter(List<Job> jobList) {
 		this.jobList = jobList;
@@ -19,7 +23,10 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
 	@Override
 	public JobViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_job, parent, false);
+		if (context == null) {
+			context = parent.getContext(); // Retrieve context from parent
+		}
+		View view = LayoutInflater.from(context).inflate(R.layout.item_job, parent, false);
 		return new JobViewHolder(view);
 	}
 
@@ -31,6 +38,17 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		holder.locationTextView.setText(job.getLocation());
 		holder.salaryTextView.setText(String.format("$%,.2f", job.getSalary()));
 		holder.datePostedTextView.setText(job.getDatePosted());
+
+		// When apply button is clicked, open the apply link in the browser
+		holder.applyButton.setOnClickListener(v -> {
+			String applyLink = job.getApplyLink();
+			if (applyLink != null && !applyLink.isEmpty()) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(applyLink));
+				context.startActivity(intent);
+			} else {
+				Toast.makeText(context, "No apply link available", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	@Override
@@ -49,6 +67,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		TextView locationTextView;
 		TextView salaryTextView;
 		TextView datePostedTextView;
+		Button applyButton;
 
 		public JobViewHolder(View itemView) {
 			super(itemView);
@@ -57,6 +76,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 			locationTextView = itemView.findViewById(R.id.job_location);
 			salaryTextView = itemView.findViewById(R.id.job_salary);
 			datePostedTextView = itemView.findViewById(R.id.job_date_posted);
+			applyButton = itemView.findViewById(R.id.apply_button);
 		}
 	}
 }
