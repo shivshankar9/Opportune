@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ public class PostJobActivity extends AppCompatActivity {
 
 	private EditText jobTitleEditText, companyNameEditText, locationEditText, jobDescriptionEditText, salaryEditText, applyLinkEditText;
 	private Button postJobButton;
+	private ProgressBar progressBar;  // ProgressBar to show posting animation
 
 	// URL for your backend (change this to the production URL)
 	private static final String BASE_URL = "https://server-opportune-1.onrender.com/";
@@ -39,6 +41,7 @@ public class PostJobActivity extends AppCompatActivity {
 		salaryEditText = findViewById(R.id.salary);
 		applyLinkEditText = findViewById(R.id.ApplyLink);
 		postJobButton = findViewById(R.id.post_job_button);
+		progressBar = findViewById(R.id.progress_bar);  // ProgressBar view
 
 		// Initialize Retrofit
 		retrofit = new Retrofit.Builder()
@@ -61,42 +64,65 @@ public class PostJobActivity extends AppCompatActivity {
 
 		// Check if all fields are filled out
 		if (!jobTitle.isEmpty() && !companyName.isEmpty() && !location.isEmpty() && !jobDescription.isEmpty() && !salaryText.isEmpty()) {
-			int salary = Integer.parseInt(salaryText);  // Convert salary to integer
+			try {
+				// Show progress bar and disable button while posting
+				progressBar.setVisibility(View.VISIBLE);
+				postJobButton.setEnabled(false);
 
-			// Create a Job object to send to the backend
-			Job job = new Job(jobTitle, jobDescription, companyName, location, salary, "2024-12-12T00:00:00", "finverge.tech");
+				int salary = Integer.parseInt(salaryText);  // Convert salary to integer
 
-			// Create the API service
-			JobApi jobApi = retrofit.create(JobApi.class);
+				// Create a Job object to send to the backend
+				Job job = new Job(jobTitle, jobDescription, companyName, location, salary, "2024-12-12T00:00:00", applyLink);
 
-			// Make the API call asynchronously
-			Call<Job> call = jobApi.postJob(job);
-			call.enqueue(new Callback<Job>() {
-				@Override
-				public void onResponse(Call<Job> call, Response<Job> response) {
-					if (response.isSuccessful()) {
-						// Successfully posted the job
-						Toast.makeText(PostJobActivity.this, "Job posted successfully!", Toast.LENGTH_SHORT).show();
+				// Create the API service
+				JobApi jobApi = retrofit.create(JobApi.class);
 
-						// Clear the input fields
-						jobTitleEditText.setText("");
-						companyNameEditText.setText("");
-						locationEditText.setText("");
-						jobDescriptionEditText.setText("");
-						salaryEditText.setText("");
-						applyLinkEditText.setText("");
-					} else {
-						// Failed to post the job (e.g., server error)
-						Toast.makeText(PostJobActivity.this, "Failed to post job. Try again.", Toast.LENGTH_SHORT).show();
+				// Make the API call asynchronously
+				Call<Job> call = jobApi.postJob(job);
+				call.enqueue(new Callback<Job>() {
+					@Override
+					public void onResponse(Call<Job> call, Response<Job> response) {
+						// Hide progress bar and enable button
+						progressBar.setVisibility(View.GONE);
+						postJobButton.setEnabled(true);
+
+						if (response.isSuccessful()) {
+							// Successfully posted the job
+							Toast.makeText(PostJobActivity.this, "Job posted successfully!", Toast.LENGTH_SHORT).show();
+
+							// Clear the input fields
+							jobTitleEditText.setText("");
+							companyNameEditText.setText("");
+							locationEditText.setText("");
+							jobDescriptionEditText.setText("");
+							salaryEditText.setText("");
+							applyLinkEditText.setText("");
+						} else {
+							// Failed to post the job (e.g., server error)
+							Toast.makeText(PostJobActivity.this, "Failed to post job. Try again.", Toast.LENGTH_SHORT).show();
+						}
 					}
-				}
 
-				@Override
-				public void onFailure(Call<Job> call, Throwable t) {
-					// Handle failure (e.g., no network connection)
-					Toast.makeText(PostJobActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-				}
-			});
+					@Override
+					public void onFailure(Call<Job> call, Throwable t) {
+						// Hide progress bar and enable button
+						progressBar.setVisibility(View.GONE);
+						postJobButton.setEnabled(true);
+
+						// Handle failure (e.g., no network connection)
+						String errorMessage = t.getMessage();
+						if (errorMessage == null || errorMessage.isEmpty()) {
+							errorMessage = "An unknown error occurred.";
+						}
+						Toast.makeText(PostJobActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+					}
+				});
+			} catch (NumberFormatException e) {
+				// If salary is not a valid number, show an error
+				progressBar.setVisibility(View.GONE);
+				postJobButton.setEnabled(true);
+				Toast.makeText(PostJobActivity.this, "Please enter a valid salary.", Toast.LENGTH_SHORT).show();
+			}
 		} else {
 			// If any of the fields are empty
 			Toast.makeText(PostJobActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();

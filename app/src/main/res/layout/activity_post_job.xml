@@ -126,4 +126,13 @@
             android:textSize="18sp"
             android:padding="12dp"
             android:layout_marginTop="16dp" />
+    <!-- Progress Bar (Initially hidden) -->
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            android:indeterminate="true"
+            android:layout_gravity="center" />
 </LinearLayout>
