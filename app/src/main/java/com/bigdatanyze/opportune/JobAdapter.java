@@ -38,14 +38,17 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		return jobList.size();
 	}
 
-	public static class JobViewHolder extends RecyclerView.ViewHolder {
+	public void updateData(List<Job> newJobList) {
+		this.jobList = newJobList;
+		notifyDataSetChanged();
+	}
 
+	public static class JobViewHolder extends RecyclerView.ViewHolder {
 		TextView titleTextView;
 		TextView companyTextView;
 		TextView locationTextView;
 		TextView salaryTextView;
 		TextView datePostedTextView;
-		Button applyButton;
 
 		public JobViewHolder(View itemView) {
 			super(itemView);
@@ -54,7 +57,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 			locationTextView = itemView.findViewById(R.id.job_location);
 			salaryTextView = itemView.findViewById(R.id.job_salary);
 			datePostedTextView = itemView.findViewById(R.id.job_date_posted);
-			applyButton = itemView.findViewById(R.id.apply_button);
 		}
 	}
 }
