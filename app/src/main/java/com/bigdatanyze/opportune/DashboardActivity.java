@@ -2,6 +2,8 @@ package com.bigdatanyze.opportune;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -88,5 +90,33 @@ public class DashboardActivity extends AppCompatActivity {
 
 	private void showError(String message) {
 		Toast.makeText(DashboardActivity.this, message, Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item clicks with if-else instead of switch
+		if (item.getItemId() == R.id.nav_home) {
+			// Navigate to Home
+			Toast.makeText(this, "Home clicked", Toast.LENGTH_SHORT).show();
+		} else if (item.getItemId() == R.id.nav_profile) {
+			// Navigate to Profile
+			Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show();
+		} else if (item.getItemId() == R.id.nav_notifications) {
+			// Navigate to Notifications
+			Toast.makeText(this, "Notifications clicked", Toast.LENGTH_SHORT).show();
+		} else if (item.getItemId() == R.id.action_logout) {
+			// Handle logout
+			Toast.makeText(this, "Logout clicked", Toast.LENGTH_SHORT).show();
+			// Add actual logout functionality here
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
 	}
 }

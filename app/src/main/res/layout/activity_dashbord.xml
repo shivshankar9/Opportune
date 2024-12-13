@@ -17,6 +17,30 @@
             android:textStyle="bold"
             android:textColor="@android:color/white" />
 
+    <!-- Notification Icon (top-right) -->
+    <ImageView
+            android:id="@+id/notification_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_notifications"
+            android:contentDescription="Notifications" />
+
+    <!-- Settings Icon (top-right) -->
+    <ImageView
+            android:id="@+id/settings_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/notification_icon"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_notifications"
+            android:contentDescription="Settings" />
+
     <!-- ProgressBar -->
     <ProgressBar
             android:id="@+id/loading_progress"

@@ -1,5 +1,6 @@
 package com.bigdatanyze.opportune;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -30,6 +31,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		return new JobViewHolder(view);
 	}
 
+
 	@Override
 	public void onBindViewHolder(JobViewHolder holder, int position) {
 		Job job = jobList.get(position);
@@ -43,13 +45,25 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		holder.applyButton.setOnClickListener(v -> {
 			String applyLink = job.getApplyLink();
 			if (applyLink != null && !applyLink.isEmpty()) {
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(applyLink));
-				context.startActivity(intent);
+				// Ensure the URL starts with "http" or "https" for a valid intent
+				if (applyLink.startsWith("http://") || applyLink.startsWith("https://")) {
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(applyLink));
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Ensures a new task is created if needed
+					try {
+						context.startActivity(intent);
+					} catch (ActivityNotFoundException e) {
+						// In case no browser is available to handle the link
+						Toast.makeText(context, "No browser available to open the link", Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					Toast.makeText(context, "Invalid link format", Toast.LENGTH_SHORT).show();
+				}
 			} else {
 				Toast.makeText(context, "No apply link available", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
+
 
 	@Override
 	public int getItemCount() {
