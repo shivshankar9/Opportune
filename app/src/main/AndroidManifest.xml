@@ -36,6 +36,9 @@
         <activity android:name=".NotificationsActivity" />
         <activity android:name=".RecruiterLoginActivity" />
         <activity android:name=".PostJobActivity" />
+        <activity android:name=".PaymentActivity" />
+
+
 
 
 

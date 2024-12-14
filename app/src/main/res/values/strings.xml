@@ -9,6 +9,9 @@
     <string name="default_web_client_id">YOUR_CLIENT_ID.apps.googleusercontent.com</string>
 
 
+    <string name="subscribe_now">Subscribe Now</string>
+    <string name="subscribe_button">Subscribe for ₹299/month</string>
+    <string name="subscription_details">Unlock all premium features by subscribing!</string>
 
 
     <string name="lorem_ipsum">

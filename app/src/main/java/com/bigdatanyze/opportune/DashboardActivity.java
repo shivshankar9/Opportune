@@ -1,11 +1,14 @@
 package com.bigdatanyze.opportune;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,15 +27,33 @@ public class DashboardActivity extends AppCompatActivity {
 	private ProgressBar loadingProgress;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private JobAdapter jobAdapter;
+	private TextView emptyStateTextView;
 
+	@SuppressLint("MissingInflatedId")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Check subscription status
+		boolean isSubscribed = getSharedPreferences("user_prefs", MODE_PRIVATE)
+				.getBoolean("is_subscribed", false);
+
+		if (!isSubscribed) {
+			// Redirect to Payment Page
+			Intent paymentIntent = new Intent(DashboardActivity.this, PaymentActivity.class);
+			startActivity(paymentIntent);
+			finish();
+			return;
+		}
+
+		// Load Dashboard layout
 		setContentView(R.layout.activity_dashbord);
 
+		// Initialize views
 		jobListRecyclerView = findViewById(R.id.job_list);
 		loadingProgress = findViewById(R.id.loading_progress);
 		swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+		emptyStateTextView = findViewById(R.id.empty_state_text);
 
 		if (jobListRecyclerView != null) {
 			jobListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -60,8 +81,11 @@ public class DashboardActivity extends AppCompatActivity {
 			public void onResponse(Call<List<Job>> call, Response<List<Job>> response) {
 				showLoading(false);
 
-				if (response.isSuccessful() && response.body() != null) {
+				if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
 					List<Job> jobs = response.body();
+					emptyStateTextView.setVisibility(View.GONE);
+					jobListRecyclerView.setVisibility(View.VISIBLE);
+
 					if (jobAdapter == null) {
 						jobAdapter = new JobAdapter(jobs);
 						jobListRecyclerView.setAdapter(jobAdapter);
@@ -69,14 +93,16 @@ public class DashboardActivity extends AppCompatActivity {
 						jobAdapter.updateData(jobs);
 					}
 				} else {
-					showError("Error: " + response.message());
+					showError("No jobs found.");
+					showEmptyState();
 				}
 			}
 
 			@Override
 			public void onFailure(Call<List<Job>> call, Throwable t) {
 				showLoading(false);
-				showError("Failure: " + t.getMessage());
+				showError("Failed to load jobs. Please swipe down to retry.");
+				showEmptyState();
 			}
 		});
 	}
@@ -92,6 +118,12 @@ public class DashboardActivity extends AppCompatActivity {
 		Toast.makeText(DashboardActivity.this, message, Toast.LENGTH_SHORT).show();
 	}
 
+	private void showEmptyState() {
+		jobListRecyclerView.setVisibility(View.GONE);
+		emptyStateTextView.setVisibility(View.VISIBLE);
+		emptyStateTextView.setText("No data available. Swipe down to refresh.");
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -100,20 +132,18 @@ public class DashboardActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item clicks with if-else instead of switch
 		if (item.getItemId() == R.id.nav_home) {
-			// Navigate to Home
 			Toast.makeText(this, "Home clicked", Toast.LENGTH_SHORT).show();
 		} else if (item.getItemId() == R.id.nav_profile) {
-			// Navigate to Profile
 			Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show();
 		} else if (item.getItemId() == R.id.nav_notifications) {
-			// Navigate to Notifications
 			Toast.makeText(this, "Notifications clicked", Toast.LENGTH_SHORT).show();
 		} else if (item.getItemId() == R.id.action_logout) {
-			// Handle logout
-			Toast.makeText(this, "Logout clicked", Toast.LENGTH_SHORT).show();
-			// Add actual logout functionality here
+			// Clear subscription status on logout
+			getSharedPreferences("user_prefs", MODE_PRIVATE).edit().clear().apply();
+			Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+			startActivity(new Intent(this, LoginActivity.class));
+			finish();
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
