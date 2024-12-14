@@ -14,14 +14,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textview.MaterialTextView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
 	private EditText usernameEditText, passwordEditText;
 	private Button loginButton;
-	private MaterialTextView recruiterLoginPageButton;	private TextView signUp;
+	private MaterialTextView recruiterLoginPageButton;
+	private TextView signUp;
 	private ImageView logo;
+
+	private static final String BASE_URL = "https://server-opportune-1.onrender.com/";
 
 	@SuppressLint("WrongViewCast")
 	@Override
@@ -82,29 +92,65 @@ public class LoginActivity extends AppCompatActivity {
 	}
 
 	private void loginUser() {
-		// Example login logic
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
 
-		if (username.equals("admin") && password.equals("admin")) {
-			// Save the login state in SharedPreferences
-			SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putBoolean("isLoggedIn", true); // User is logged in
-			editor.apply();
-
-			// Redirect to DashboardActivity after successful login
-			Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-			startActivity(intent);
-			finish(); // Close the login activity
-		} else {
-			Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+		// Validate email and password fields
+		if (username.isEmpty() || password.isEmpty()) {
+			Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+			return;
 		}
+
+		// Retrofit to make API call
+		Retrofit retrofit = new Retrofit.Builder()
+				.baseUrl(BASE_URL) // Ensure BASE_URL is correct
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
+
+		UsersApi usersApi = retrofit.create(UsersApi.class);
+
+		// Send request to fetch user by email
+		Call<Users> call = usersApi.getUserByEmail(username);  // Assuming the method is defined in UsersApi
+
+		call.enqueue(new Callback<Users>() {
+			@Override
+			public void onResponse(Call<Users> call, Response<Users> response) {
+				if (response.isSuccessful() && response.body() != null) {
+					Users user = response.body();
+
+					// Compare the password with the one stored on the server
+					if (user.getPassword().equals(password)) {
+						Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+						// Save user session info (e.g., SharedPreferences)
+						SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
+						SharedPreferences.Editor editor = sharedPreferences.edit();
+						editor.putBoolean("isLoggedIn", true);
+						editor.putString("userId", user.getId());
+						editor.putString("userName", user.getName());
+						editor.apply();
+
+						// Navigate to the main app dashboard
+						Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+						startActivity(intent);
+						finish();
+					} else {
+						Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					// If the user is not found (404 or any other error)
+					Toast.makeText(LoginActivity.this, "User not found", Toast.LENGTH_SHORT).show();
+				}
+			}
+
+			@Override
+			public void onFailure(Call<Users> call, Throwable t) {
+				Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
-
 	private void signupUser() {
-		// Handle user signup (you can implement signup logic here)
 		Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
 		startActivity(intent);
 		finish();
