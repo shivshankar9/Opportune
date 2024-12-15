@@ -22,6 +22,20 @@ public class Users {
 	// Default constructor
 	public Users() {}
 
+	public Users(String name, String email, String phone, boolean b, String number) {
+	  this.name=name;
+	  this.email=email;
+	  this.phoneNo=phone;
+	  this.isSubscribed=b;
+	  this.password=number;
+	}
+
+	public Users(String name, String email, String password) {
+	this.name=name;
+	this.email=email;
+	this.password=password;
+	}
+
 	// Getters and setters
 
 	public String getId() {

@@ -85,9 +85,5 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/recruiter_login_page_button"
             android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/rounded_button" />
-
-
-
+            android:layout_centerHorizontal="true" />
 </RelativeLayout>

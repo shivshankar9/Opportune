@@ -37,7 +37,7 @@
             android:layout_below="@id/payment_description"
             android:layout_marginTop="20dp"
             android:padding="12dp"
-            android:text="Subscribe for ₹299/month"
+            android:text="Subscribe for ₹500/month"
             android:textSize="18sp"
             android:textColor="@android:color/white"
             android:background="@color/primary" />

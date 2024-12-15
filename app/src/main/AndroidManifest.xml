@@ -36,7 +36,15 @@
         <activity android:name=".NotificationsActivity" />
         <activity android:name=".RecruiterLoginActivity" />
         <activity android:name=".PostJobActivity" />
-        <activity android:name=".PaymentActivity" />
+        <activity android:name=".PaymentActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Razorpay -->
+        <activity android:name="com.razorpay.CheckoutActivity" />
 
 
 
