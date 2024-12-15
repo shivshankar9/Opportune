@@ -1,16 +1,22 @@
 package com.bigdatanyze.opportune;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
 	private List<Job> jobList;
+	private Context context; // Declare a context variable
 
 	public JobAdapter(List<Job> jobList) {
 		this.jobList = jobList;
@@ -18,9 +24,13 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
 	@Override
 	public JobViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_job, parent, false);
+		if (context == null) {
+			context = parent.getContext(); // Retrieve context from parent
+		}
+		View view = LayoutInflater.from(context).inflate(R.layout.item_job, parent, false);
 		return new JobViewHolder(view);
 	}
+
 
 	@Override
 	public void onBindViewHolder(JobViewHolder holder, int position) {
@@ -31,20 +41,47 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 		holder.salaryTextView.setText(String.format("$%,.2f", job.getSalary()));
 		holder.datePostedTextView.setText(job.getDatePosted());
 
+		// When apply button is clicked, open the apply link in the browser
+		holder.applyButton.setOnClickListener(v -> {
+			String applyLink = job.getApplyLink();
+			if (applyLink != null && !applyLink.isEmpty()) {
+				// Ensure the URL starts with "http" or "https" for a valid intent
+				if (applyLink.startsWith("http://") || applyLink.startsWith("https://")) {
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(applyLink));
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Ensures a new task is created if needed
+					try {
+						context.startActivity(intent);
+					} catch (ActivityNotFoundException e) {
+						// In case no browser is available to handle the link
+						Toast.makeText(context, "No browser available to open the link", Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					Toast.makeText(context, "Invalid link format", Toast.LENGTH_SHORT).show();
+				}
+			} else {
+				Toast.makeText(context, "No apply link available", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
+
 
 	@Override
 	public int getItemCount() {
 		return jobList.size();
 	}
 
-	public static class JobViewHolder extends RecyclerView.ViewHolder {
+	public void updateData(List<Job> newJobList) {
+		this.jobList = newJobList;
+		notifyDataSetChanged();
+	}
 
+	public static class JobViewHolder extends RecyclerView.ViewHolder {
 		TextView titleTextView;
 		TextView companyTextView;
 		TextView locationTextView;
 		TextView salaryTextView;
 		TextView datePostedTextView;
+		Button applyButton;
 
 		public JobViewHolder(View itemView) {
 			super(itemView);
@@ -53,6 +90,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 			locationTextView = itemView.findViewById(R.id.job_location);
 			salaryTextView = itemView.findViewById(R.id.job_salary);
 			datePostedTextView = itemView.findViewById(R.id.job_date_posted);
+			applyButton = itemView.findViewById(R.id.apply_button);
 		}
 	}
 }
