@@ -8,17 +8,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
 	private ImageView profilePicture;
 	private TextView profileName, profileEmail, profileBio;
 	private TextView editProfile, accountSettings, notificationSettings, logout;
+	private BottomNavigationView bottomNavigationView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+
+		bottomNavigationView = findViewById(R.id.bottom_navigation);
+		bottomNavigationView.setSelectedItemId(R.id.nav_profile); // Set Profile as selected item by default
+		bottomNavigationView.setOnItemSelectedListener(item -> {
+			int id = item.getItemId();
+
+			if (id == R.id.nav_home) {
+				Intent profileIntent = new Intent(ProfileActivity.this, DashboardActivity.class);
+				startActivity(profileIntent);
+				overridePendingTransition(0, 0); // Disable animation
+				return true;
+			} else if (id == R.id.nav_profile) {
+				// Already on ProfileActivity, so no navigation needed
+				return true;
+			} else if (id == R.id.nav_notifications) {
+				Intent notificationIntent = new Intent(ProfileActivity.this, NotificationsActivity.class);
+				startActivity(notificationIntent);
+				overridePendingTransition(0, 0); // Disable animation
+				return true;
+			} else {
+				return false; // Default behavior
+			}
+		});
 
 		// Initialize the views
 		profilePicture = findViewById(R.id.profile_picture);
@@ -36,52 +61,32 @@ public class ProfileActivity extends AppCompatActivity {
 		profileBio.setText("A passionate developer with experience in building mobile applications.");
 
 		// Edit Profile click listener
-		editProfile.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Handle edit profile action
-				Toast.makeText(ProfileActivity.this, "Edit Profile Clicked", Toast.LENGTH_SHORT).show();
-				// Example: Redirect to EditProfileActivity
-				Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
-				startActivity(intent);
-			}
+		editProfile.setOnClickListener(v -> {
+			Toast.makeText(ProfileActivity.this, "Edit Profile Clicked", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+			startActivity(intent);
 		});
 
 		// Account Settings click listener
-		accountSettings.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Handle account settings action
-				Toast.makeText(ProfileActivity.this, "Account Settings Clicked", Toast.LENGTH_SHORT).show();
-				// Example: Redirect to AccountSettingsActivity
-				Intent intent = new Intent(ProfileActivity.this, AccountSettingsActivity.class);
-				startActivity(intent);
-			}
+		accountSettings.setOnClickListener(v -> {
+			Toast.makeText(ProfileActivity.this, "Account Settings Clicked", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(ProfileActivity.this, AccountSettingsActivity.class);
+			startActivity(intent);
 		});
 
 		// Notification Settings click listener
-		notificationSettings.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Handle notification settings action
-				Toast.makeText(ProfileActivity.this, "Notification Settings Clicked", Toast.LENGTH_SHORT).show();
-				// Example: Redirect to NotificationSettingsActivity
-				Intent intent = new Intent(ProfileActivity.this, NotificationSettingsActivity.class);
-				startActivity(intent);
-			}
+		notificationSettings.setOnClickListener(v -> {
+			Toast.makeText(ProfileActivity.this, "Notification Settings Clicked", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(ProfileActivity.this, NotificationSettingsActivity.class);
+			startActivity(intent);
 		});
 
 		// Logout click listener
-		logout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Handle logout action
-				Toast.makeText(ProfileActivity.this, "Logout Clicked", Toast.LENGTH_SHORT).show();
-				// Example: Redirect to LoginActivity after logout
-				Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-				startActivity(intent);
-				finish();
-			}
+		logout.setOnClickListener(v -> {
+			Toast.makeText(ProfileActivity.this, "Logout Clicked", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+			startActivity(intent);
+			finish();
 		});
 	}
 }

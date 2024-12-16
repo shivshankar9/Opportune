@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +29,7 @@ public class DashboardActivity extends AppCompatActivity {
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private JobAdapter jobAdapter;
 	private TextView emptyStateTextView;
+	private BottomNavigationView bottomNavigationView;
 
 	@SuppressLint("MissingInflatedId")
 	@Override
@@ -48,6 +50,30 @@ public class DashboardActivity extends AppCompatActivity {
 
 		// Load Dashboard layout
 		setContentView(R.layout.activity_dashbord);
+		bottomNavigationView = findViewById(R.id.bottom_navigation);
+		bottomNavigationView.setOnItemSelectedListener(item -> {
+			int id = item.getItemId();
+
+			if (id == R.id.nav_home) {
+				// Display a Toast for "Home" without navigating
+				Toast.makeText(DashboardActivity.this, "Home clicked", Toast.LENGTH_SHORT).show();
+				return true; // No navigation as we're already on Home
+			} else if (id == R.id.nav_profile) {
+				// Navigate to ProfileActivity only if not already there
+				Intent profileIntent = new Intent(DashboardActivity.this, ProfileActivity.class);
+				startActivity(profileIntent);
+				overridePendingTransition(0, 0); // Disable animation
+				return true;
+			} else if (id == R.id.nav_notifications) {
+				// Navigate to NotificationsActivity only if not already there
+				Intent notificationIntent = new Intent(DashboardActivity.this, NotificationsActivity.class);
+				startActivity(notificationIntent);
+				overridePendingTransition(0, 0); // Disable animation
+				return true;
+			} else {
+				return false; // Default behavior
+			}
+		});
 
 		// Initialize views
 		jobListRecyclerView = findViewById(R.id.job_list);
@@ -90,7 +116,7 @@ public class DashboardActivity extends AppCompatActivity {
 						jobAdapter = new JobAdapter(jobs);
 						jobListRecyclerView.setAdapter(jobAdapter);
 					} else {
-						jobAdapter.updateData(jobs);
+						jobAdapter.updateData(jobs); // Use this to update job data
 					}
 				} else {
 					showError("No jobs found.");
