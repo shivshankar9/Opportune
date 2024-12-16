@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 			startActivity(intent);
 		} else {
 			// Redirect to LoginActivity if not logged in
-			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+			Intent intent = new Intent(MainActivity.this, OnbordActivity.class);
 			startActivity(intent);
 		}
 		finish(); // Close MainActivity
